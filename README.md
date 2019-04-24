@@ -18,4 +18,7 @@ sudo pip3 install Adafruit_DHT
 ```
 curl -sSL https://get.docker.com | sh
 sudo usermod -aG docker pi
+
+sudo apt install libffi-dev
+sudo pip3 install docker-compose
 ```

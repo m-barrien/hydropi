@@ -14,6 +14,12 @@ sudo python3 -m pip install --upgrade pip setuptools wheel
 ```
 sudo pip3 install Adafruit_DHT
 ```
+
+### Install pip for ads1x15 ADC
+```
+sudo pip3 install adafruit-circuitpython-ads1x15	
+```
+
 ## Install docker 
 ```
 curl -sSL https://get.docker.com | sh
@@ -22,3 +28,4 @@ sudo usermod -aG docker pi
 sudo apt install libffi-dev
 sudo pip3 install docker-compose
 ```
+

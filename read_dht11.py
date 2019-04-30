@@ -9,7 +9,7 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
-# The above copyright notice and this permission notice shall be included in all
+# The above copyriself.ght notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -24,23 +24,21 @@ import sys
 import Adafruit_DHT
 
 
-# Parse command line parameters.
-sensor = Adafruit_DHT.DHT11
-pin = 27
+class DHT11(object):
+	"""docstring for RelayGPIO"""
+	def __init__(self, channels):
+		self.channels = channels
+		self.sensor = Adafruit_DHT.DHT11
+	def read_hum_temp(self, id=None):
+		if id:
+			humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.channels[id])
+			if humidity is not None and temperature is not None:
+				return { "humidity" : [humidity], "temperature": [temperature] }
+		else:
+			result={ "humidity" : [], "temperature": [] }
+			for chn in self.channels:
+				humidity, temperature = Adafruit_DHT.read_retry(self.sensor, chn)
+				result["humidity"].append(humidity)
+				result["temperature"].append(temperature)
+			return result
 
-# Try to grab a sensor reading.  Use the read_retry method which will retry up
-# to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-
-# Un-comment the line below to convert the temperature to Fahrenheit.
-# temperature = temperature * 9/5.0 + 32
-
-# Note that sometimes you won't get a reading and
-# the results will be null (because Linux can't
-# guarantee the timing of calls to read the sensor).
-# If this happens try again!
-if humidity is not None and temperature is not None:
-    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-else:
-    print('Failed to get reading. Try again!')
-sys.exit(1)

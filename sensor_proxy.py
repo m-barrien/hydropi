@@ -1,37 +1,14 @@
 from time import sleep
-import time
-import board
-import busio
-import adafruit_ads1x15.ads1115 as ADS
-from adafruit_ads1x15.analog_in import AnalogIn
+from ads1115 import SoilMeter
 from relay_control import RelayGPIO
 
 relayControl = RelayGPIO((23,24))
 relayControl.relay_on(index=1)
 sleep(1)
-print(relayControl.get_status())
 relayControl.relay_on(index=0)
-sleep(1)
-relayControl.relay_off(index=1)
-sleep(1)
-relayControl.relay_off(index=0)
-sleep(1)
+
+
+soil = SoilMeter()
+print(soil.read_voltage())
+
 relayControl.cleanup()
-
-# Create the I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
-
-# Create the ADC object using the I2C bus
-ads = ADS.ADS1115(i2c, address=0x49)
-
-# Create single-ended input on channel 0
-chan = AnalogIn(ads, ADS.P0)
-
-# Create differential input between channel 0 and 1
-#chan = AnalogIn(ads, ADS.P0, ADS.P1)
-
-print("{:>5}\t{:>5}".format('raw', 'v'))
-
-while True:
-    print("{:>5}\t{:>5.3f}".format(chan.value, chan.voltage))
-time.sleep(0.5)

@@ -1,14 +1,38 @@
 import RPi.GPIO as GPIO
 from time import sleep
-GPIO.setmode(GPIO.BCM) # GPIO Numbers instead of board numbers
  
-RELAIS_1_GPIO = 23
-RELAIS_2_GPIO = 24
-GPIO.setup(RELAIS_1_GPIO, GPIO.OUT) # GPIO Assign mode
-GPIO.setup(RELAIS_2_GPIO, GPIO.OUT) # GPIO Assign mode
-GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # out
-GPIO.output(RELAIS_2_GPIO, GPIO.LOW) # out
-sleep(3)
-#GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # on
-#GPIO.output(RELAIS_2_GPIO, GPIO.HIGH) # on
-GPIO.cleanup( (RELAIS_1_GPIO, RELAIS_2_GPIO) )
+
+class RelayGPIO(object):
+	"""docstring for RelayGPIO"""
+	def __init__(self, channels):
+		self.channels = channels
+		self.status={}
+		GPIO.setmode(GPIO.BCM)
+		for chann in channels:
+			GPIO.setup(chann, GPIO.OUT)
+		self.relay_off()
+	def relay_on(self, index=None):
+		if index:
+			GPIO.output(self.channels[index], GPIO.LOW)
+			self.status[self.channels[index]]= True
+		else:
+			GPIO.output(self.channels, GPIO.LOW) 
+			for chn in self.channels:
+				self.status[chn] = True
+	def relay_off(self, index=None):
+		if index:
+			GPIO.output(self.channels[index], GPIO.HIGH)
+			self.status[self.channels[index]]= False
+		else:
+			GPIO.output(self.channels, GPIO.HIGH) 
+			for chn in self.channels:
+				self.status[chn] = False
+	def get_status(self):
+		result =[]
+		for chn in self.channels:
+			result.append(self.status[chn])
+		return result
+
+	def cleanup(self):
+		GPIO.cleanup( self.channels )
+

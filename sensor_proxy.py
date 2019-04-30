@@ -1,8 +1,22 @@
+from time import sleep
 import time
 import board
 import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
+from relay_control import RelayGPIO
+
+relayControl = RelayGPIO((23,24))
+relayControl.relay_on(index=1)
+sleep(1)
+print(relayControl.get_status())
+relayControl.relay_on(index=0)
+sleep(1)
+relayControl.relay_off(index=1)
+sleep(1)
+relayControl.relay_off(index=0)
+sleep(1)
+relayControl.cleanup()
 
 # Create the I2C bus
 i2c = busio.I2C(board.SCL, board.SDA)

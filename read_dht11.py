@@ -30,7 +30,7 @@ class DHT11(object):
 		self.channels = channels
 		self.sensor = Adafruit_DHT.DHT11
 	def read_hum_temp(self, id=None):
-		if id:
+		if id!= None:
 			humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.channels[id])
 			if humidity is not None and temperature is not None:
 				return { "humidity" : [humidity], "temperature": [temperature] }

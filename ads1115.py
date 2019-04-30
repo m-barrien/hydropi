@@ -17,7 +17,7 @@ class SoilMeter(object):
 		# Create single-ended input on channel 0
 		self.channels = [AnalogIn(self.ads1, ADS.P0) , AnalogIn(self.ads1, ADS.P1) , AnalogIn(self.ads1, ADS.P2) , AnalogIn(self.ads1, ADS.P3) , AnalogIn(self.ads2, ADS.P0) , AnalogIn(self.ads2, ADS.P1) , AnalogIn(self.ads2, ADS.P2) , AnalogIn(self.ads2, ADS.P3)]
 	def read_voltage(self,pin=None):
-		if not pin:
+		if  pin!= None:
 			voltages = []
 			for analog in self.channels:
 				voltages.append(analog.voltage)

@@ -12,7 +12,7 @@ class RelayGPIO(object):
 			GPIO.setup(chann, GPIO.OUT)
 		self.relay_off()
 	def relay_on(self, index=None):
-		if index:
+		if index!= None:
 			GPIO.output(self.channels[index], GPIO.LOW)
 			self.status[self.channels[index]]= True
 		else:
@@ -20,7 +20,7 @@ class RelayGPIO(object):
 			for chn in self.channels:
 				self.status[chn] = True
 	def relay_off(self, index=None):
-		if index:
+		if index != None:
 			GPIO.output(self.channels[index], GPIO.HIGH)
 			self.status[self.channels[index]]= False
 		else:

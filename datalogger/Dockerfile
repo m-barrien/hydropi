@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./datalogger.py" ]
+CMD [ "python","-u", "./datalogger.py" ]

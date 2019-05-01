@@ -34,14 +34,18 @@ class SensorHTTPRequestHandler(BaseHTTPRequestHandler):
 		if self.path in routes:
 			if self.path == relay_1_on:
 				relayControl.relay_on(index=0)
+				out = relayControl.get_status()
 			elif self.path == relay_2_on:
 				relayControl.relay_on(index=1)
+				out = relayControl.get_status()
 			elif self.path == relay_1_off:
 				relayControl.relay_off(index=0)	
+				out = relayControl.get_status()
 			elif self.path == relay_2_off:
 				relayControl.relay_off(index=1)
+				out = relayControl.get_status()
 			elif self.path == relay_read:
-				relayControl.get_status()
+				out = relayControl.get_status()
 			elif self.path == read_hum_temp:
 				out = air.read_hum_temp()
 			elif self.path == soil_read:

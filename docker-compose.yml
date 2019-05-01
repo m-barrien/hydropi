@@ -2,6 +2,8 @@ version: "3.3"
 services:
   datalogger:
     build: "./datalogger"
+    depends_on:
+      - mysql
     network_mode: host
   mysql:
     image: jsurf/rpi-mariadb 

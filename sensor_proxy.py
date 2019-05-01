@@ -8,7 +8,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import ssl
 
 #Sensors
-air = DHT11([17])
+air = DHT11([17,27])
 relayControl = RelayGPIO((23,24))
 soil = SoilMeter()
 

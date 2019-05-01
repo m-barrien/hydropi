@@ -1,7 +1,10 @@
 version: "3.3"
 services:
+  datalogger:
+    build: "./datalogger"
+    network_mode: host
   mysql:
-    image: jsurf/rpi-mariadb
+    image: jsurf/rpi-mariadb 
     networks:
       - backend
     ports:

@@ -20,7 +20,8 @@ relay_2_off = "/relay/2/off"
 relay_read = "/relay"
 read_hum_temp = "/temp"
 soil_read = "/soil"
-routes=[relay_1_on ,relay_2_on ,relay_1_off ,relay_2_off ,relay_read ,read_hum_temp ,soil_read]
+read_all = "/"
+routes=[relay_1_on ,relay_2_on ,relay_1_off ,relay_2_off ,relay_read ,read_hum_temp ,soil_read,read_all]
 
 class SensorHTTPRequestHandler(BaseHTTPRequestHandler):
 	def set_headers(self):
@@ -34,22 +35,26 @@ class SensorHTTPRequestHandler(BaseHTTPRequestHandler):
 		if self.path in routes:
 			if self.path == relay_1_on:
 				relayControl.relay_on(index=0)
-				out = relayControl.get_status()
+				out["relay"] = relayControl.get_status()
 			elif self.path == relay_2_on:
 				relayControl.relay_on(index=1)
-				out = relayControl.get_status()
+				out["relay"] = relayControl.get_status()
 			elif self.path == relay_1_off:
 				relayControl.relay_off(index=0)	
-				out = relayControl.get_status()
+				out["relay"] = relayControl.get_status()
 			elif self.path == relay_2_off:
 				relayControl.relay_off(index=1)
-				out = relayControl.get_status()
+				out["relay"] = relayControl.get_status()
 			elif self.path == relay_read:
 				out = relayControl.get_status()
 			elif self.path == read_hum_temp:
-				out = air.read_hum_temp()
+				out["air"] = air.read_hum_temp()
 			elif self.path == soil_read:
-				out = soil.read_voltage()
+				out["soil"] = soil.read_voltage()
+			elif self.path == read_all:
+				out["soil"] = soil.read_voltage()
+				out["air"] = air.read_hum_temp()
+				out["relay"] = relayControl.get_status()
 				
 			self.wfile.write(json.dumps(out).encode("utf-8"))
 			

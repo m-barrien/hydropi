@@ -3,6 +3,7 @@ from ads1115 import SoilMeter
 from read_dht11 import DHT11
 from relay_control import RelayGPIO
 
+import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import ssl
 
@@ -22,9 +23,14 @@ soil_read = "/soil"
 routes=[relay_1_on ,relay_2_on ,relay_1_off ,relay_2_off ,relay_read ,read_hum_temp ,soil_read]
 
 class SensorHTTPRequestHandler(BaseHTTPRequestHandler):
-
+	def set_headers(self):
+		self.send_response(200)
+		self.send_header('Content-type', 'application/json')
+		self.send_header('Access-Control-Allow-Origin', '*')
+		self.end_headers()
 	def do_GET(self):
-		print(self.path)
+		self.set_headers()
+		out={}
 		if self.path in routes:
 			if self.path == relay_1_on:
 				relayControl.relay_on(index=0)
@@ -37,13 +43,13 @@ class SensorHTTPRequestHandler(BaseHTTPRequestHandler):
 			elif self.path == relay_read:
 				relayControl.get_status()
 			elif self.path == read_hum_temp:
-				air.read_hum_temp()
+				out = air.read_hum_temp()
 			elif self.path == soil_read:
-				soil.read_voltage()
+				out = soil.read_voltage()
+				
+			self.wfile.write(json.dumps(out).encode("utf-8"))
+			
 
-			self.send_response(200)
-			self.send_header('Access-Control-Allow-Origin', '*')
-			self.end_headers()
 
 		else:
 			self.send_error(404)
